@@ -1,0 +1,102 @@
+openapi: 3.0.0
+info:
+  title: CRUD API
+  description: An API for creating, reading, updating, and deleting items.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /items:
+    post:
+      summary: Create an item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                quantity:
+                  type: integer
+            example:
+              name: "Sample Item"
+              quantity: 10
+      responses:
+        '201':
+          description: Item created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+
+    get:
+      summary: Retrieve a list of items
+      responses:
+        '200':
+          description: A list of items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+
+  /items/{id}:
+    put:
+      summary: Update an item
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The item ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                quantity:
+                  type: integer
+            example:
+              name: "Updated Item"
+              quantity: 15
+      responses:
+        '200':
+          description: Item updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+
+    delete:
+      summary: Delete an item
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The item ID
+      responses:
+        '204':
+          description: Item deleted successfully
+
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        quantity:
+          type: integer
